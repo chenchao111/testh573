@@ -23,25 +23,4 @@
 <%})%>
 
 
-<!--页码区域-->
-<nav>
-    <ul class="pagination">
-        <li>
-            <a href="/?keyword=<%=keyword%>&pageNum=<%=(pageNum>1?pageNum-1:1)%>&pageSize=<%=pageSize%>" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-            </a>
-        </li>
-        <%for (var i=1; i<=totalPage; i++){%>
-            <li class="<%=((pageNum==i) ? 'active': '')%>"><a href="/?keyword=<%=keyword%>&pageNum=<%=i%>&pageSize=<%=pageSize%>"><%=i%></a></li>
-        <%}%>
-
-        <li>
-            <a href="/?keyword=<%=keyword%>&pageNum=<%=(pageNum<totalPage?pageNum+1:totalPage)%>&pageSize=<%=pageSize%>" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-            </a>
-        </li>
-    </ul>
-</nav>
-
-
 <%-include include/footer.html%>

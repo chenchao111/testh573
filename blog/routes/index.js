@@ -23,14 +23,7 @@ router.get('/', function (req, res, next) {
     }
 
 
-    //获取pageNum和pageSize的值
-    var pageNum = parseInt(req.query.pageNum) || 1;
-    var pageSize = parseInt(req.query.pageSize) || 3;
-
-
     articleModel.find(query)
-        .skip((pageNum-1)*pageSize)  //跳过前面的pageNum-1页的数据
-        .limit(pageSize)           //默认一个显示pageSize条信息
         .populate('user')
         .exec(function (err, articles) {
             if (!err) {
@@ -40,23 +33,11 @@ router.get('/', function (req, res, next) {
                     article.content = markdown.toHTML(article.content);//让所有文章的内容支持markdown
                 });
 
-                articleModel.count(query, function (err, count) {
-                    if (!err){
-                        res.render('index', {
-                            title: '首页标题',
-                            articles: articles,
-                            keyword: keyword, //渲染模版引擎文件
-                            pageNum: pageNum,  //页数
-                            pageSize: pageSize,   //一页显示多少条
-                            totalPage: Math.ceil(parseInt(count)/pageSize)  //总页数
-                        });
-                    } else {
-                         req.flash('error', '获取总条数失败');
-                        res.redirect('back');
-                    }
+                res.render('index', {
+                    title: '首页标题',
+                    articles: articles,
+                    keyword: keyword //渲染模版引擎文件
                 });
-
-
             } else {
                 req.flash('error', '获取文章列表信息失败');
                 res.redirect('back');
